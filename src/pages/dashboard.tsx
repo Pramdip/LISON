@@ -116,52 +116,63 @@ const heroRef = useRef<HTMLDivElement>(null);
 const containerRef = useRef<HTMLDivElement>(null);
 
 useEffect(() => {
-  const animateCircles = (container: HTMLDivElement | null, delayOffset = 0) => {
-    if (!container) return;
+const startBounce = (container: HTMLDivElement | null) => {
+  if (!container) return;
 
-    const circle1 = container.querySelector(".circle1") as HTMLElement;
-    const circle2 = container.querySelector(".circle2") as HTMLElement;
-    if (!circle1 || !circle2) return;
+  const circles = Array.from(container.querySelectorAll(".circle1, .circle2")) as HTMLElement[];
+  if (!circles.length) return;
 
-    const containerWidth = container.clientWidth;
-    const containerHeight = container.clientHeight;
+  const containerWidth = container.clientWidth;
+  const containerHeight = container.clientHeight;
 
-    const corners = [
-      { x: containerWidth * 0.1, y: containerHeight * 0.1 },
-      { x: containerWidth * 0.8, y: containerHeight * 0.1 },
-      { x: containerWidth * 0.45, y: containerHeight * 0.8 },
-    ];
+  const positions = circles.map(() => ({
+    x: Math.random() * (containerWidth - 0),
+    y: Math.random() * (containerHeight - 1),
+  }));
 
-    const duration = 2.5;
+  const velocities = circles.map(() => ({
+    x: (Math.random() * 2 + 1) * (Math.random() > 0.5 ? 1 : -1),
+    y: (Math.random() * 2 + 1) * (Math.random() > 0.5 ? 1 : -1),
+  }));
 
-    const animateCircle = (circle: HTMLElement, startIndex = 0, delay = 0) => {
-      const tl = gsap.timeline({ repeat: -1, delay });
-      let currentIndex = startIndex;
+  const animate = () => {
+    circles.forEach((circle, i) => {
+      positions[i].x += velocities[i].x;
+      positions[i].y += velocities[i].y;
 
-      for (let i = 0; i < corners.length; i++) {
-        const nextIndex = (currentIndex + 1) % corners.length;
-
-        tl.to(circle, {
-          x: corners[nextIndex].x,
-          y: corners[nextIndex].y,
-          duration,
-          ease: "power1.inOut",
-        });
-
-        currentIndex = nextIndex;
+      // Bounce off walls
+      if (positions[i].x <= 0) {
+        positions[i].x = 0;
+        velocities[i].x *= -1;
+      } else if (positions[i].x + circle.offsetWidth >= containerWidth) {
+        positions[i].x = containerWidth - circle.offsetWidth;
+        velocities[i].x *= -1;
       }
 
-      return tl;
-    };
+      if (positions[i].y <= 0) {
+        positions[i].y = 0;
+        velocities[i].y *= -1;
+      } else if (positions[i].y + circle.offsetHeight >= containerHeight) {
+        positions[i].y = containerHeight - circle.offsetHeight;
+        velocities[i].y *= -1;
+      }
 
-    animateCircle(circle1, 0, 0 + delayOffset);
-    animateCircle(circle2, 1, duration + delayOffset);
+      circle.style.transform = `translate(${positions[i].x}px, ${positions[i].y}px)`;
+    });
+
+    requestAnimationFrame(animate);
   };
 
-  // Animate both heroRef and containerRef
-  animateCircles(heroRef.current);
-  animateCircles(containerRef.current, 1.25); // optional delay for second container
+  animate();
+};
+
+// Call it for both heroRef and containerRef
+startBounce(heroRef.current);
+startBounce(containerRef.current);
+
 }, []);
+
+
 
 
   return (
