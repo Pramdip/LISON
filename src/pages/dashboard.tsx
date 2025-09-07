@@ -2,166 +2,67 @@ import image from "../img/logo.png";
 import layout from "../img/layout.png";
 import users from "../img/Group.png";
 import jamal from "../img/Jamal.png";
-import adam from "../img/Adam.png";
-import steve from "../img/Steve.png";
-import family from "../img/Family.png";
 import { FaLinkedin, FaDiscord, FaInstagram } from "react-icons/fa";
 import circles from "../img/circles.png";
 import paint from "../img/paint.png";
 import dot from "../img/dot.png";
-import gg from "../img/gg.png";
-import powercraft from "../img/powercraft.png";
-import massdesign from "../img/massadesigns.png";
-import maqar from "../img/maqar.png";
-import foster from "../img/foster.png";
-import starbeauty from "../img/starbeauty.png";
-import { IoPlayCircleSharp } from "react-icons/io5";
-import { FaArrowRight } from "react-icons/fa";
-
-import vlog from "../img/vlog.png";
-import cashcow from "../img/cashcow.png";
-import reel from "../img/Reel.png";
-import squarrel from "../img/squarrel.png";
-import singer from "../img/singer.png";
-import button from "../img/button.png";
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
-
-type Card = {
-  name: string;
-  statement: string;
-};
-type describe = {
-  img: string;
-  description: string;
-  name: string;
-  position: string;
-};
-type icons = {
-  icon: string;
-};
-type img = {
-  image: string;
-  name: string;
-};
-const imgs: img[] = [
-  { image: cashcow, name: "CASH COW" },
-  { image: reel, name: "REEL" },
-  { image: vlog, name: "VLOG" },
-  { image: button, name: "CASH COW" },
-  { image: squarrel, name: "CASH COW" },
-  { image: singer, name: "PODCAST" },
-];
-const icon: icons[] = [
-  { icon: gg },
-  { icon: foster },
-  { icon: powercraft },
-  { icon: massdesign },
-  { icon: starbeauty },
-  { icon: maqar },
-];
-
-const cards: Card[] = [
-  {
-    name: "100+",
-    statement: "Completed Projects",
-  },
-  {
-    name: "50+",
-    statement: "Happy Clients",
-  },
-  {
-    name: "10+",
-    statement: "Years Experience",
-  },
-  {
-    name: "24/7",
-    statement: "Support",
-  },
-];
-
-const describes: describe[] = [
-  {
-    img: jamal,
-    description:
-      "“Great work as always! Lison got the job done quickly and effectively! Communication on point and I will continue to work with him for all of my graphic design projects! ⭐️⭐️ ⭐️ ⭐️ ⭐️”",
-    name: "Kameron Coleman",
-    position: "Star Beauty Plus",
-  },
-  {
-    img: adam,
-    description:
-      "“Lison was an absolute pleasure to work with! He is professional, creative, and has a great work ethic. Lison was always open to feedback and promptly made revisions based on our comments so we could get the final product close to what we originally envisioned. I highly recommend Lison for anyone looking for high-quality video content creation”",
-    name: "Ivor Cirwan",
-    position: "L4 Studios",
-  },
-  {
-    img: steve,
-    description:
-      "“Working with Lison has been great. Attention to detail, communication, and punctuality are all on point, I've worked in different styles of editing, and Lison has been able to perform, definitely hire him!”",
-    name: "Coach V",
-    position: "Power craft Training",
-  },
-  {
-    img: family,
-    description:
-      "“Working with Lison on a farewell video for my brother was an absolute pleasure. Not only did he understand our requirements promptly, but he also delivered beyond expectations. His creativity and expertise were evident in every frame, and he went above and beyond to ensure our satisfaction. Lison's professionalism shone through in his prompt responses and timely delivery. If you're looking for someone who will exceed your expectations, look no further than Lison.”",
-    name: "Manshi Shah Mehta",
-    position: "",
-  },
-];
+import { IoPlayCircleSharp } from "react-icons/io5";
+import { FaArrowRight } from "react-icons/fa";
+import { cards, describes, icon, imgs } from "../constants/dashboard";
 
 export default function Dashboard() {
   const containerRef = useRef<HTMLDivElement>(null);
-useEffect(() => {
-  const container = containerRef.current;
-  if (!container) return;
+  const HeroRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-  const circle1 = container.querySelector(".circle1") as HTMLElement;
-  const circle2 = container.querySelector(".circle2") as HTMLElement;
-  if (!circle1 || !circle2) return;
+    const circle1 = container.querySelector(".circle1") as HTMLElement;
+    const circle2 = container.querySelector(".circle2") as HTMLElement;
+    if (!circle1 || !circle2) return;
 
-  const containerWidth = container.clientWidth;
-  const containerHeight = container.clientHeight;
+    const containerWidth = container.clientWidth;
+    const containerHeight = container.clientHeight;
 
-  // Triangle corners
-  const corners = [
-    { x: containerWidth * 0.1, y: containerHeight * 0.1 }, // top-left
-    { x: containerWidth * 0.8, y: containerHeight * 0.1 }, // top-right
-    { x: containerWidth * 0.45, y: containerHeight * 0.8 }, // bottom-middle
-  ];
+    // Triangle corners
+    const corners = [
+      { x: containerWidth * 0.1, y: containerHeight * 0.1 }, // top-left
+      { x: containerWidth * 0.8, y: containerHeight * 0.1 }, // top-right
+      { x: containerWidth * 0.45, y: containerHeight * 0.8 }, // bottom-middle
+    ];
 
-  const duration = 2.5; // movement duration
+    const duration = 2.5; // movement duration
 
-  const animateCircle = (circle: HTMLElement, startIndex = 0, delay = 0) => {
-    const tl = gsap.timeline({ repeat: -1, delay }); // infinite loop
+    const animateCircle = (circle: HTMLElement, startIndex = 0, delay = 0) => {
+      const tl = gsap.timeline({ repeat: -1, delay }); // infinite loop
 
-    let currentIndex = startIndex;
+      let currentIndex = startIndex;
 
-    // 🔹 Loop forever through corners
-    for (let i = 0; i < corners.length; i++) {
-      const nextIndex = (currentIndex + 1) % corners.length;
+      // 🔹 Loop forever through corners
+      for (let i = 0; i < corners.length; i++) {
+        const nextIndex = (currentIndex + 1) % corners.length;
 
-      tl.to(circle, {
-        x: corners[nextIndex].x,
-        y: corners[nextIndex].y,
-        duration: duration,
-        ease: "power1.inOut",
-      });
+        tl.to(circle, {
+          x: corners[nextIndex].x,
+          y: corners[nextIndex].y,
+          duration: duration,
+          ease: "power1.inOut",
+        });
 
-      currentIndex = nextIndex;
-    }
+        currentIndex = nextIndex;
+      }
 
-    return tl;
-  };
+      return tl;
+    };
 
-  // Circle 1 starts immediately
-  animateCircle(circle1, 0, 0);
+    // Circle 1 starts immediately
+    animateCircle(circle1, 0, 0);
 
-  // Circle 2 starts staggered
-  animateCircle(circle2, 1, duration);
-}, []);
-
+    // Circle 2 starts staggered
+    animateCircle(circle2, 1, duration);
+  }, []);
 
   return (
     <>
@@ -464,7 +365,6 @@ useEffect(() => {
           </div>
 
           <div className="w-full overflow-x-auto no-scrollbar">
-            
             <div className="flex gap-16 px-16  ml-60 mr-50 ">
               {imgs.map((data, index) => (
                 <div
@@ -546,104 +446,103 @@ useEffect(() => {
       </div>
       <div className="bg-[#1A0000]">
         <div
-            className="relative w-full h-auto overflow-hidden flex flex-col justify-center pl-4 sm:pl-16 md:pl-60 text-[#EEDCBC] space-y-4 p-5 gap-10 pt-8 sm:pt-30"
-            ref={containerRef}
-          >
-            {/* Circle animation inside this column */}
-            {/* First Circle */}
-            <div className="circle1 absolute top-0 left-0 w-[600px] h-[600px] bg-[#B36666]/15 rounded-full blur-3xl"></div>
+          className="relative w-full h-auto overflow-hidden flex flex-col justify-center pl-4 sm:pl-16 md:pl-60 text-[#EEDCBC] space-y-4 p-5 gap-10 pt-8 sm:pt-30"
+          ref={HeroRef}
+        >
+          {/* Circle animation inside this column */}
+          {/* First Circle */}
+          <div className="circle1 absolute top-0 left-0 w-[600px] h-[600px] bg-[#B36666]/15 rounded-full blur-3xl"></div>
 
-            {/* Second Circle (duplicate with different position/size) */}
-            <div className="circle2 absolute bottom-0 right-0 w-[600px] h-[600px] bg-[#B36666]/15 rounded-full blur-3xl"></div>
+          {/* Second Circle (duplicate with different position/size) */}
+          <div className="circle2 absolute bottom-0 right-0 w-[600px] h-[600px] bg-[#B36666]/15 rounded-full blur-3xl"></div>
 
-      <div className="w-full h-screen md:h-280 lg:280 sm:h-screen bg-[#1A0000] text-white  grid grid-cols-2 font-comforta test">
-        
-        <div className="flex  flex-col justify-center items-center gap-10">
-          <h1
-            className="text-4xl sm:text-6xl md:text-7xl max-w-full sm:max-w-max pb-6 border-b-1 font-light text-center sm:text-left"
-            style={{
-              borderImage:
-                "linear-gradient(to right, #E6CCCC, #993333, #F2E5E5) 1",
-              color: "#EEDCBC",
-            }}
-          >
-            LET'S COLLABORATE
-          </h1>
-          <p className="text-2xl font-light text-center">
-            Have a project in mind? Fill out the form below and I’ll get back to
-            you soon.
-          </p>
-        </div>
-        <div className="flex justify-center font-light text-xl text-[#EEDCBC]">
-          <form action="">
-            <div className="p-40 flex flex-col bo">
-              <label className="">Name</label>
-              <input
-                type="text"
-                className=" lg:w-120 md:w-120 h-17 border text-[#EEDCBC80] mt-5 mb-5 p-4 rounded-md"
-                placeholder="Your Full Name"
+          <div className="w-full h-screen md:h-280 lg:280 sm:h-screen bg-[#1A0000] text-white  grid grid-cols-2 font-comforta test">
+            <div className="flex  flex-col justify-center items-center gap-10">
+              <h1
+                className="text-4xl sm:text-6xl md:text-7xl max-w-full sm:max-w-max pb-6 border-b-1 font-light text-center sm:text-left"
                 style={{
-                  background:
-                    "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
-                  backdropFilter: "blur(50.1px)",
-                  boxShadow: `
-     
-      
-      -6px -3px 6px -4px #F7EBDD inset,
-      8px 3px 6px -5px #F7EBDD inset,
-      7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
-    `,
-                }}
-              />
-              <label>Email</label>
-              <input
-                type="text"
-                className=" lg:w-120 md:w-120 h-17 border text-[#EEDCBC80] mt-5 mb-5 p-4 rounded-md bg-[#340000]"
-                placeholder="Your example@gmail.com"
-                style={{
-                  background:
-                    "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
-                  backdropFilter: "blur(50.1px)",
-                  boxShadow: `
-     
-      
-      -6px -3px 6px -4px #F7EBDD inset,
-      8px 3px 6px -5px #F7EBDD inset,
-      7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
-    `,
-                }}
-              />
-              <label>Project Type</label>
-              <select
-                name=""
-                id=""
-                className="w-auto h-17 border text-[#EEDCBC80] mt-5 mb-5 p-4 rounded-md bg-[#340000]"
-                style={{
-                  background:
-                    "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
-                  backdropFilter: "blur(50.1px)",
-                  boxShadow: `
-     
-      
-      -6px -3px 6px -4px #F7EBDD inset,
-      8px 3px 6px -5px #F7EBDD inset,
-      7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
-    `,
+                  borderImage:
+                    "linear-gradient(to right, #E6CCCC, #993333, #F2E5E5) 1",
+                  color: "#EEDCBC",
                 }}
               >
-                <option value="">Graphic Design</option>
-              </select>
+                LET'S COLLABORATE
+              </h1>
+              <p className="text-2xl font-light text-center">
+                Have a project in mind? Fill out the form below and I’ll get
+                back to you soon.
+              </p>
+            </div>
+            <div className="flex justify-center font-light text-xl text-[#EEDCBC]">
+              <form action="">
+                <div className="p-40 flex flex-col bo">
+                  <label className="">Name</label>
+                  <input
+                    type="text"
+                    className=" lg:w-120 md:w-120 h-17 border text-[#EEDCBC80] mt-5 mb-5 p-4 rounded-md"
+                    placeholder="Your Full Name"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
+                      backdropFilter: "blur(50.1px)",
+                      boxShadow: `
+     
+      
+      -6px -3px 6px -4px #F7EBDD inset,
+      8px 3px 6px -5px #F7EBDD inset,
+      7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
+    `,
+                    }}
+                  />
+                  <label>Email</label>
+                  <input
+                    type="text"
+                    className=" lg:w-120 md:w-120 h-17 border text-[#EEDCBC80] mt-5 mb-5 p-4 rounded-md bg-[#340000]"
+                    placeholder="Your example@gmail.com"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
+                      backdropFilter: "blur(50.1px)",
+                      boxShadow: `
+     
+      
+      -6px -3px 6px -4px #F7EBDD inset,
+      8px 3px 6px -5px #F7EBDD inset,
+      7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
+    `,
+                    }}
+                  />
+                  <label>Project Type</label>
+                  <select
+                    name=""
+                    id=""
+                    className="w-auto h-17 border text-[#EEDCBC80] mt-5 mb-5 p-4 rounded-md bg-[#340000]"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
+                      backdropFilter: "blur(50.1px)",
+                      boxShadow: `
+     
+      
+      -6px -3px 6px -4px #F7EBDD inset,
+      8px 3px 6px -5px #F7EBDD inset,
+      7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
+    `,
+                    }}
+                  >
+                    <option value="">Graphic Design</option>
+                  </select>
 
-              <label htmlFor="">Message</label>
-              <input
-                type="text"
-                className="lg:w-120 md:w-120 h-90 border border-transparent text-[#EEDCBC80] mt-5 mb-5 rounded-md bg-[#340000] font p-5 resize-none"
-                placeholder="Tell me about your project"
-                style={{
-                  background:
-                    "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.08), rgba(238,220,188,0.1) 100%)", // subtle glass background
-                  backdropFilter: "blur(50px)",
-                  boxShadow: `
+                  <label htmlFor="">Message</label>
+                  <input
+                    type="text"
+                    className="lg:w-120 md:w-120 h-90 border border-transparent text-[#EEDCBC80] mt-5 mb-5 rounded-md bg-[#340000] font p-5 resize-none"
+                    placeholder="Tell me about your project"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.08), rgba(238,220,188,0.1) 100%)", // subtle glass background
+                      backdropFilter: "blur(50px)",
+                      boxShadow: `
       /* top-left shine */
       -6px -3px 6px -4px #F7EBDD inset,
 
@@ -653,34 +552,33 @@ useEffect(() => {
       /* thin golden inner border highlight */
        4px  4px 2px -6px #EEDCBC80 inset
     `,
-                }}
-              />
+                    }}
+                  />
 
-              <button
-                className="lg:w-120 md:w-120 h-17 border text-[#EEDCBC80] mt-5 mb-5 rounded-full cursor-pointer flex items-center justify-center gap-2 px-6"
-                style={{
-                  background:
-                    "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
-                  backdropFilter: "blur(50.1px)",
-                  boxShadow: `
+                  <button
+                    className="lg:w-120 md:w-120 h-17 border text-[#EEDCBC80] mt-5 mb-5 rounded-full cursor-pointer flex items-center justify-center gap-2 px-6"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
+                      backdropFilter: "blur(50.1px)",
+                      boxShadow: `
      
       
       -6px -3px 6px -4px #F7EBDD inset,
       8px 3px 6px -5px #F7EBDD inset,
       7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
     `,
-                }}
-              >
-                <FaArrowRight className="w-5 h-5" />
-                Submit
-              </button>
+                    }}
+                  >
+                    <FaArrowRight className="w-5 h-5" />
+                    Submit
+                  </button>
+                </div>
+              </form>
             </div>
-          </form>
+          </div>
         </div>
       </div>
-      </div>
-      </div>
-
     </>
   );
 }
