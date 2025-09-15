@@ -24,8 +24,8 @@ import reel from "../img/Reel.png";
 import squarrel from "../img/squarrel.png";
 import singer from "../img/singer.png";
 import button from "../img/button.png";
-import gsap from "gsap";
 import { useEffect, useRef } from "react";
+import { CiMenuBurger } from "react-icons/ci";
 
 type Card = {
   name: string;
@@ -112,176 +112,214 @@ const describes: describe[] = [
 ];
 
 export default function Dashboard() {
-const heroRef = useRef<HTMLDivElement>(null);
-const containerRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-useEffect(() => {
-const startBounce = (container: HTMLDivElement | null) => {
-  if (!container) return;
+  useEffect(() => {
+    const speed = 0.1; // increase → faster, decrease → slower
 
-  const circles = Array.from(container.querySelectorAll(".circle1, .circle2")) as HTMLElement[];
-  if (!circles.length) return;
+    const startBounce = (container: HTMLDivElement | null) => {
+      if (!container) return;
 
-  const containerWidth = container.clientWidth;
-  const containerHeight = container.clientHeight;
+      const circles = Array.from(
+        container.querySelectorAll(".circle1, .circle2")
+      ) as HTMLElement[];
+      if (!circles.length) return;
 
-  const positions = circles.map(() => ({
-    x: Math.random() * (containerWidth - 0),
-    y: Math.random() * (containerHeight - 1),
-  }));
+      const containerWidth = container.clientWidth;
+      const containerHeight = container.clientHeight;
 
-  const velocities = circles.map(() => ({
-    x: (Math.random() * 2 + 1) * (Math.random() > 0.5 ? 1 : -1),
-    y: (Math.random() * 2 + 1) * (Math.random() > 0.5 ? 1 : -1),
-  }));
+      const positions = circles.map(() => ({
+        x: Math.random() * (containerWidth - 0),
+        y: Math.random() * (containerHeight - 1),
+      }));
 
-  const animate = () => {
-    circles.forEach((circle, i) => {
-      positions[i].x += velocities[i].x;
-      positions[i].y += velocities[i].y;
+      const velocities = circles.map(() => ({
+        x: (Math.random() * speed + 1) * (Math.random() > 0.5 ? 1 : -1),
+        y: (Math.random() * speed + 1) * (Math.random() > 0.5 ? 1 : -1),
+      }));
 
-      // Bounce off walls
-      if (positions[i].x <= 0) {
-        positions[i].x = 0;
-        velocities[i].x *= -1;
-      } else if (positions[i].x + circle.offsetWidth >= containerWidth) {
-        positions[i].x = containerWidth - circle.offsetWidth;
-        velocities[i].x *= -1;
-      }
+      const animate = () => {
+        circles.forEach((circle, i) => {
+          positions[i].x += velocities[i].x;
+          positions[i].y += velocities[i].y;
 
-      if (positions[i].y <= 0) {
-        positions[i].y = 0;
-        velocities[i].y *= -1;
-      } else if (positions[i].y + circle.offsetHeight >= containerHeight) {
-        positions[i].y = containerHeight - circle.offsetHeight;
-        velocities[i].y *= -1;
-      }
+          // Bounce off walls
+          if (positions[i].x <= 0) {
+            positions[i].x = 0;
+            velocities[i].x *= -1;
+          } else if (positions[i].x + circle.offsetWidth >= containerWidth) {
+            positions[i].x = containerWidth - circle.offsetWidth;
+            velocities[i].x *= -1;
+          }
 
-      circle.style.transform = `translate(${positions[i].x}px, ${positions[i].y}px)`;
-    });
+          if (positions[i].y <= 0) {
+            positions[i].y = 0;
+            velocities[i].y *= -1;
+          } else if (positions[i].y + circle.offsetHeight >= containerHeight) {
+            positions[i].y = containerHeight - circle.offsetHeight;
+            velocities[i].y *= -1;
+          }
 
-    requestAnimationFrame(animate);
-  };
+          circle.style.transform = `translate(${positions[i].x}px, ${positions[i].y}px)`;
+        });
 
-  animate();
-};
+        requestAnimationFrame(animate);
+      };
 
-// Call it for both heroRef and containerRef
-startBounce(heroRef.current);
-startBounce(containerRef.current);
+      animate();
+    };
 
-}, []);
-
-
-
+    // Call it for both heroRef and containerRef
+    startBounce(heroRef.current);
+    startBounce(containerRef.current);
+  }, []);
 
   return (
     <>
       <div className="font-comforta">
-        <div></div>
         <div
-          className="grid grid-cols-1 sm:grid-cols-3 items-center p-5 z-100 fixed"
-          style={{ backgroundColor: "#340000" }}
+          className="
+              grid md:grid-cols-[20fr_60fr_20fr] sm:grid-cols-3 grid-cols-2 items-center
+              sm:gap-2 md:gap-4 lg:gap-6  
+              p-5
+              bg-[#340000]
+            "
         >
           {/* Logo */}
-          <div className="ml-6 sm:ml-60">
+          <div className="lg:h-30 lg:w-30 md:h-20 md:w-20 sm:h-10 sm:w-10 w-10 h-10 md:ml-30 sm:ml-20">
             <img
               src={image}
               alt="logo"
-              className="w-28 h-20 sm:w-28 sm:h-20 object-contain"
+              className="h-full w-full object-contain"
             />
           </div>
 
           {/* Navigation */}
-          <div className="hidden sm:flex justify-center ">
-            <ul
-              className="flex justify-between text-xl md:text-2xl gap-4 md:gap-25 list-none font-light "
-              style={{ color: "#EEDCBC" }}
-            >
+          <div className="hidden sm:flex justify-center">
+            <ul className="flex sm:text-sm md:text-xl lg:text-2xl gap-2 sm:gap-4 md:gap-6 lg:gap-8 list-none font-light text-[#EEDCBC]">
               <li className="cursor-pointer">HOME</li>
               <li className="cursor-pointer">PORTFOLIO</li>
               <li className="cursor-pointer">TESTIMONIALS</li>
               <li className="cursor-pointer">CONTACT</li>
             </ul>
           </div>
-          {/* 🔹 Header */}
 
           {/* Social Icons */}
-          <div className="flex justify-center gap-4 sm:gap-15 text-2xl sm:text-5xl mt-4 sm:mt-0 text-white">
-            <FaLinkedin className="cursor-pointer hover:text-blue-600 w-10 h-10" />
-            <FaDiscord className="cursor-pointer hover:text-indigo-500 w-10 h-10" />
-            <FaInstagram className="cursor-pointer hover:text-pink-500 w-10 h-10" />
+          <div
+            className="
+              flex sm:justify-end justify-end gap-3
+              sm:gap-4 md:gap-6 lg:gap-8      /* start tiny, grow gradually */
+              text-xl sm:text-2xl md:text-3xl lg:text-4xl  /* icon font-size scales */
+              text-white
+            "
+          >
+            <FaLinkedin className="cursor-pointer hover:text-blue-600" />
+            <FaDiscord className="cursor-pointer hover:text-indigo-500" />
+            <FaInstagram className="cursor-pointer hover:text-pink-500" />
           </div>
         </div>
 
         {/* 🔹 Hero Section */}
         <div
-          className="grid grid-cols-1 md:grid-cols-[60fr_40fr] md:h-252 pt-30"
+          className="grid grid-cols-[60fr_40fr] h-auto"
           style={{ backgroundColor: "#1A0000" }}
         >
           {/* First column (60fr) */}
           <div
-            className="relative w-full md:300 overflow-hidden flex flex-col justify-center pl-4 sm:pl-16 md:pl-60 text-[#EEDCBC] space-y-4 p-5 pt-8 sm:pt-30"
+            className="relative w-full  overflow-hidden flex flex-col pl-4 sm:pl-10 md:pl-15 lg:pl-30 text-[#EEDCBC] space-y-4 p-5 pt-8 sm:pt-30"
             ref={containerRef}
           >
             {/* Circle animation inside this column */}
             {/* First Circle */}
-            <div className="circle1 absolute top-0 left-0 w-[600px] h-[600px] bg-[#B36666]/15 rounded-full blur-3xl"></div>
+            {/* First Circle */}
+            <div
+              className="
+                  circle1
+                  absolute top-0 left-0
+                  w-[200px] sm:w-[300px] md:w-[450px] lg:w-[600px]
+                  h-[200px] sm:h-[300px] md:h-[450px] lg:h-[600px]
+                  bg-[#B36666]/15
+                  rounded-full
+                  blur-3xl
+                "
+            ></div>
 
-            {/* Second Circle (duplicate with different position/size) */}
-            <div className="circle2 absolute bottom-0 right-0 w-[600px] h-[600px] bg-[#B36666]/15 rounded-full blur-3xl"></div>
+            {/* Second Circle */}
+            <div
+              className="
+                  circle2
+                  absolute bottom-0 right-0
+                  w-[200px] sm:w-[300px] md:w-[450px] lg:w-[600px]
+                  h-[200px] sm:h-[300px] md:h-[450px] lg:h-[600px]
+                  bg-[#B36666]/15
+                  rounded-full
+                  blur-3xl
+                "
+            ></div>
 
-            {/* Your text content */}
-            <p
-              className="text-2xl max-w-max pb-2 border-b-1 font-light"
-              style={{
-                borderImage:
-                  "linear-gradient(to right, #E6CCCC, #993333, #F2E5E5) 1",
-              }}
-            >
-              I'M LISON KARMACHARYA
-            </p>
+            <div className="px-2 sm:px-4 md:px-6 lg:px-10 py-4 sm:py-6 md:py-8 lg:py-10">
+              {/* Name with gradient underline */}
+              <p
+                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl max-w-max pb-2 font-light border-b"
+                style={{
+                  borderImage:
+                    "linear-gradient(to right, #E6CCCC, #993333, #F2E5E5) 1",
+                }}
+              >
+                I'M LISON KARMACHARYA
+              </p>
 
-            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-6xl font-bold leading-snug">
-              <span>A DESIGNER WHO EDIT , OR</span>
-              <br />
-              <span className="ml-4">AN EDIT WHO DESIGNS</span>
-            </h1>
+              {/* Main heading */}
+              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-snug mt-4">
+                <span>A DESIGNER WHO EDIT, OR</span>
+                {/* <br /> */}
+                <span className="ml-1 sm:ml-2 md:ml-4 lg:ml-6">
+                  AN EDIT WHO DESIGNS
+                </span>
+              </h1>
 
-            <p className="text-xl sm:text-2xl md:text-3xl font-light">
-              Helping your brand shine with bold design and smooth video edits
-            </p>
+              {/* Description */}
+              <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light mt-2 md:mt-4">
+                Helping your brand shine with bold design and smooth video edits
+              </p>
+            </div>
+
             <button
-              className="flex items-center gap-2 px-6 py-3 rounded-full w-fit h-20 cursor-pointer
-             text-[#EEDCBC] font-light text-2xl relative overflow-hidden"
+              className="flex items-center gap-2 px-4 sm:px-6 md:px-8 lg:px-10 py-4 sm:py-5 md:py-7 lg:py-7 rounded-full w-fit cursor-pointer text-[#EEDCBC] font-light text-base sm:text-lg md:text-xl lg:text-2xl relative overflow-hidden"
               style={{
                 background:
-                  "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
-                backdropFilter: "blur(50.1px)",
+                  "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)",
+                backdropFilter: "blur(50px)",
                 boxShadow: `
-     
-      
-      -6px -3px 6px -4px #F7EBDD inset,
-      8px 3px 6px -5px #F7EBDD inset,
-      7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
-    `,
+        -6px -3px 6px -4px #F7EBDD inset,
+        8px 3px 6px -5px #F7EBDD inset,
+        7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
+      `,
               }}
             >
-              <img src={users} alt="icon" className="w-6 h-6" />
+              <img
+                src={users}
+                alt="icon"
+                className="w-4 sm:w-5 md:w-6 lg:w-6 h-4 sm:h-5 md:h-6 lg:h-6"
+              />
               Let's Collaborate
             </button>
 
-            <div className="flex flex-col sm:flex-row justify-between mb-0 gap-4 sm:gap-0">
+            <div className="flex flex-row sm:flex-row justify-between mb-0 gap-4 sm:gap-6 md:gap-8 lg:gap-10">
+              {/* Left image */}
               <img
                 src={paint}
                 alt=""
-                className="w-full sm:w-60 h-auto sm:h-40"
+                className="w-[60px] sm:w-[120px] md:w-[180px] lg:w-[240px] sm:h-[50px] md:h-[150px] lg:h-[200px] h-[50px]"
               />
-              <div className="pt-4 sm:pt-15 ">
+
+              {/* Right image */}
+              <div className="pt-2 sm:pt-4 md:pt-6 lg:pt-8">
                 <img
                   src={circles}
                   alt=""
-                  className="w-full sm:w-90 h-auto sm:h-55"
+                  className="w-[40px] sm:w-[80px] md:w-[150px] lg:w-[220px]"
                 />
               </div>
             </div>
@@ -301,7 +339,7 @@ startBounce(containerRef.current);
           className=""
           style={{ backgroundColor: "#1A0000", color: "#F2E5E5" }}
         >
-          <ul className="flex list-none overflow-x-auto gap-4 sm:gap-40 text-xl sm:text-3xl font-light items-center pl-4 sm:pl-80 whitespace-nowrap no-scrollbar h-32 sm:h-40">
+          <ul className="flex list-none overflow-x-auto gap-4 sm:gap-40 sm:text-sm md:text-xl lg:text-3xl font-light items-center pl-4 sm:pl-80 whitespace-nowrap no-scrollbar sm:h-20 h-20 md:h-30 lg:h-40">
             <li className="flex flex-nowrap">Reels editing</li>
             <img src={dot} alt="" className="w-4 h-4" />
             <li>Vlog Editing</li>
@@ -330,7 +368,7 @@ startBounce(containerRef.current);
         <div className=" w-full h-auto md:h-250 lg:220 sm:h-screen bg-[#1A0000] text-white overflow-hidden">
           <div className="flex justify-center pt-10 sm:pt-20 px-4 sm:px-0">
             <h1
-              className="text-4xl sm:text-6xl md:text-7xl max-w-full sm:max-w-max pb-10 border-b-1 font-light text-center sm:text-left"
+              className=" text-2xl lg:text-6xl sm:text-2xl  md:text-4xl max-w-full sm:max-w-max pb-10 border-b-1 font-light text-center"
               style={{
                 borderImage:
                   "linear-gradient(to right, #E6CCCC, #993333, #F2E5E5) 1",
@@ -341,18 +379,37 @@ startBounce(containerRef.current);
             </h1>
           </div>
 
-          <div className="mt-20 sm:mt-20 grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-10 px-4 md:px-60">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="mt-20 sm:mt-20 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2  sm:gap-10 sm:px-10 md:px-35">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5">
               {cards.map((data, index) => (
                 <div
                   key={index}
-                  className="h-48 sm:h-60 w-full flex justify-center flex-col items-center p-6 sm:p-10 rounded-md hover:border-1 text-[#EEDCBC] "
-                  style={{ backgroundColor: "#330000" }}
+                  className="
+                              w-full
+                              flex flex-col justify-center items-center
+                              rounded-md hover:border
+                              text-[#EEDCBC]
+                              bg-[#330000]
+                              /* Heights */
+                              h-40 sm:h-56 md:h-60 lg:h-60
+                              /* Padding */
+                              p-4 sm:p-6 md:p-8 lg:p-10
+                            "
                 >
-                  <p className="text-3xl sm:text-5xl font-semibold">
+                  <p
+                    className="
+                                  font-semibold
+                                  text-2xl sm:text-4xl md:text-5xl lg:text-5xl
+                                "
+                  >
                     {data.name}
                   </p>
-                  <p className="text-xl sm:text-2xl font-light">
+                  <p
+                    className="
+          font-light
+          text-lg sm:text-xl md:text-2xl lg:text-2xl
+        "
+                  >
                     {data.statement}
                   </p>
                 </div>
@@ -360,38 +417,38 @@ startBounce(containerRef.current);
             </div>
 
             <div className="w-full relative">
-              <div className="w-full border border-[#EEDCBC22] flex justify-center items-center h-auto sm:h-120 rounded-md">
+              <div className="w-full border border-[#EEDCBC22] flex justify-center items-center h-auto sm:h-120 rounded-md sm:gap-5">
                 {/* Top-right box */}
                 <div className="absolute top-4 sm:top-8 right-4 sm:right-8  rounded-2xl w-40 sm:w-52 md:w-40 h-32 sm:h-36 md:h-40 bg-[#330000]"></div>
 
                 {/* Bottom-left box */}
-                <div className="absolute bottom-2 sm:bottom-9 left-[-10px] sm:ml-20  rounded-2xl w-72 sm:w-90 md:w-80 h-32 sm:h-36 md:h-40 mb-5 bg-[#330000]"></div>
+                <div className="absolute bottom-4 sm:bottom-9  sm:ml-20  rounded-2xl w-72 sm:w-90 md:w-80 h-32 sm:h-36 md:h-40 mb-5 bg-[#330000]"></div>
                 <div>
                   <button
                     className="flex items-center justify-center rounded-full w-13 h-13 cursor-pointer 
                text-[white] font-light text-2xl  overflow-hidden
-               absolute bottom-10 right-10" // position button in bottom-right
+               absolute md:bottom-10 sm:bottom-5 bottom-5 right-10" // position button in bottom-right
                     style={{
                       background:
                         "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)",
                       backdropFilter: "blur(50.1px)",
                       boxShadow: `
-        -6px -3px 6px -4px #F7EBDD inset,
-        8px 3px 6px -5px #F7EBDD inset,
-        7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
-      `,
+                        -6px -3px 6px -4px #F7EBDD inset,
+                        8px 3px 6px -5px #F7EBDD inset,
+                        7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
+                      `,
                     }}
                   >
                     <FaArrowRight className="w-6 h-6" />
                   </button>
                 </div>
 
-                <div className="w-full h-full flex justify-center items-center pl-15">
-                  <div className="border-2 border-black p-3 sm:p-5 flex flex-col sm:flex-row items-center justify-start rounded-md absolute w-full sm:w-170 h-auto sm:h-70 bg-[#050505]">
+                <div className="w-full h-full flex justify-center items-center pl-15 sm:pl-0"> 
+                  <div className="border-2 border-black p-3 sm:p-5 flex flex-col sm:flex-row items-center justify-start rounded-md absolute w-full md:w-170 md:h-70 sm:h-75 sm:w-130 bg-[#050505]">
                     {/* Decorative circles */}
-                    <div className="backdrop-blur-sm w-24 h-16 sm:w-27 sm:h-20 rounded-2xl absolute bottom-[-40px] sm:bottom-[-50px] left-1/2 -translate-x-[120%] flex items-end justify-start shadow-[-4px_-2px_4px_-4px_#F7EBDD_inset,4px_3px_4px_-4px_#F7EBDD_inset,7.03px_7.03px_1.17px_-8.2px_#EEDCBC80_inset]"></div>
-                    <div className="backdrop-blur-sm w-24 h-16 sm:w-37 sm:h-22 rounded-2xl absolute top-[-40px] sm:top-[-60px] left-1/2 -translate-x-[110%] flex items-end justify-start shadow-[-4px_-2px_4px_-4px_#F7EBDD_inset,4px_3px_4px_-4px_#F7EBDD_inset,7.03px_7.03px_1.17px_-8.2px_#EEDCBC80_inset]"></div>
-                    <div className="backdrop-blur-sm w-24 h-16 sm:w-22 sm:h-20 rounded-2xl absolute top-0 sm:top-[-40px] right-0 sm:right-[-37px] flex items-end justify-start shadow-[-4px_-2px_4px_-4px_#F7EBDD_inset,4px_3px_4px_-4px_#F7EBDD_inset,7.03px_7.03px_1.17px_-8.2px_#EEDCBC80_inset]"></div>
+                    <div className="backdrop-blur-sm md:w-27 md:h-20 sm:w-24 sm:h-14 rounded-2xl absolute bottom-[-40px] md:bottom-[-50px] sm:bottom-[-70px] left-1/2 -translate-x-[120%] sm:-translate-x-[150%] flex items-end justify-start shadow-[-4px_-2px_4px_-4px_#F7EBDD_inset,4px_3px_4px_-4px_#F7EBDD_inset,7.03px_7.03px_1.17px_-8.2px_#EEDCBC80_inset]"></div>
+                    <div className="backdrop-blur-sm md:w-37 md:h-22 sm:w-34 sm:h-20 rounded-2xl absolute top-[-40px] md:top-[-60px] sm:top-[-65px] left-1/2 -translate-x-[100%] flex items-end justify-start shadow-[-4px_-2px_4px_-4px_#F7EBDD_inset,4px_3px_4px_-4px_#F7EBDD_inset,7.03px_7.03px_1.17px_-8.2px_#EEDCBC80_inset]"></div>
+                    <div className="backdrop-blur-sm md:w-22 md:h-20 sm:w-19 sm:h-17 rounded-2xl absolute top-0 sm:top-[-40px] right-0 sm:right-[-12px] sm:flex items-end justify-start shadow-[-4px_-2px_4px_-4px_#F7EBDD_inset,4px_3px_4px_-4px_#F7EBDD_inset,7.03px_7.03px_1.17px_-8.2px_#EEDCBC80_inset]"></div>
 
                     <img
                       src={jamal}
@@ -476,7 +533,6 @@ startBounce(containerRef.current);
           </div>
 
           <div className="w-full overflow-x-auto no-scrollbar">
-            
             <div className="flex gap-16 px-16  ml-60 mr-50 ">
               {imgs.map((data, index) => (
                 <div
@@ -558,104 +614,103 @@ startBounce(containerRef.current);
       </div>
       <div className="bg-[#1A0000]">
         <div
-            className="relative w-full h-auto overflow-hidden flex flex-col justify-center pl-4 sm:pl-16 md:pl-60 text-[#EEDCBC] space-y-4 p-5 gap-10 pt-8 sm:pt-30"
-            ref={heroRef}
-          >
-            {/* Circle animation inside this column */}
-            {/* First Circle */}
-            <div className="circle1 absolute top-0 left-0 w-[600px] h-[600px] bg-[#B36666]/15 rounded-full blur-3xl"></div>
+          className="relative w-full h-auto overflow-hidden flex flex-col justify-center pl-4 sm:pl-16 md:pl-60 text-[#EEDCBC] space-y-4 p-5 gap-10 pt-8 sm:pt-30"
+          ref={heroRef}
+        >
+          {/* Circle animation inside this column */}
+          {/* First Circle */}
+          <div className="circle1 absolute top-0 left-0 w-[600px] h-[600px] bg-[#B36666]/15 rounded-full blur-3xl"></div>
 
-            {/* Second Circle (duplicate with different position/size) */}
-            <div className="circle2 absolute bottom-0 right-0 w-[600px] h-[600px] bg-[#B36666]/15 rounded-full blur-3xl"></div>
+          {/* Second Circle (duplicate with different position/size) */}
+          <div className="circle2 absolute bottom-0 right-0 w-[600px] h-[600px] bg-[#B36666]/15 rounded-full blur-3xl"></div>
 
-      <div className="w-full h-screen md:h-280 lg:280 sm:h-screen bg-[#1A0000] text-white  grid grid-cols-2 font-comforta test">
-        
-        <div className="flex  flex-col justify-center items-center gap-10">
-          <h1
-            className="text-4xl sm:text-6xl md:text-7xl max-w-full sm:max-w-max pb-6 border-b-1 font-light text-center sm:text-left"
-            style={{
-              borderImage:
-                "linear-gradient(to right, #E6CCCC, #993333, #F2E5E5) 1",
-              color: "#EEDCBC",
-            }}
-          >
-            LET'S COLLABORATE
-          </h1>
-          <p className="text-2xl font-light text-center">
-            Have a project in mind? Fill out the form below and I’ll get back to
-            you soon.
-          </p>
-        </div>
-        <div className="flex justify-center font-light text-xl text-[#EEDCBC]">
-          <form action="">
-            <div className="p-40 flex flex-col bo">
-              <label className="">Name</label>
-              <input
-                type="text"
-                className=" lg:w-120 md:w-120 h-17 border text-[#EEDCBC80] mt-5 mb-5 p-4 rounded-md"
-                placeholder="Your Full Name"
+          <div className="w-full h-screen md:h-280 lg:280 sm:h-screen bg-[#1A0000] text-white  grid grid-cols-2 font-comforta test">
+            <div className="flex  flex-col justify-center items-center gap-10">
+              <h1
+                className="text-4xl sm:text-6xl md:text-7xl max-w-full sm:max-w-max pb-6 border-b-1 font-light text-center sm:text-left"
                 style={{
-                  background:
-                    "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
-                  backdropFilter: "blur(50.1px)",
-                  boxShadow: `
-     
-      
-      -6px -3px 6px -4px #F7EBDD inset,
-      8px 3px 6px -5px #F7EBDD inset,
-      7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
-    `,
-                }}
-              />
-              <label>Email</label>
-              <input
-                type="text"
-                className=" lg:w-120 md:w-120 h-17 border text-[#EEDCBC80] mt-5 mb-5 p-4 rounded-md bg-[#340000]"
-                placeholder="Your example@gmail.com"
-                style={{
-                  background:
-                    "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
-                  backdropFilter: "blur(50.1px)",
-                  boxShadow: `
-     
-      
-      -6px -3px 6px -4px #F7EBDD inset,
-      8px 3px 6px -5px #F7EBDD inset,
-      7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
-    `,
-                }}
-              />
-              <label>Project Type</label>
-              <select
-                name=""
-                id=""
-                className="w-auto h-17 border text-[#EEDCBC80] mt-5 mb-5 p-4 rounded-md bg-[#340000]"
-                style={{
-                  background:
-                    "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
-                  backdropFilter: "blur(50.1px)",
-                  boxShadow: `
-     
-      
-      -6px -3px 6px -4px #F7EBDD inset,
-      8px 3px 6px -5px #F7EBDD inset,
-      7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
-    `,
+                  borderImage:
+                    "linear-gradient(to right, #E6CCCC, #993333, #F2E5E5) 1",
+                  color: "#EEDCBC",
                 }}
               >
-                <option value="">Graphic Design</option>
-              </select>
+                LET'S COLLABORATE
+              </h1>
+              <p className="text-2xl font-light text-center">
+                Have a project in mind? Fill out the form below and I’ll get
+                back to you soon.
+              </p>
+            </div>
+            <div className="flex justify-center font-light text-xl text-[#EEDCBC]">
+              <form action="">
+                <div className="p-40 flex flex-col bo">
+                  <label className="">Name</label>
+                  <input
+                    type="text"
+                    className=" lg:w-120 md:w-120 h-17 border text-[#EEDCBC80] mt-5 mb-5 p-4 rounded-md"
+                    placeholder="Your Full Name"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
+                      backdropFilter: "blur(50.1px)",
+                      boxShadow: `
+     
+      
+      -6px -3px 6px -4px #F7EBDD inset,
+      8px 3px 6px -5px #F7EBDD inset,
+      7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
+    `,
+                    }}
+                  />
+                  <label>Email</label>
+                  <input
+                    type="text"
+                    className=" lg:w-120 md:w-120 h-17 border text-[#EEDCBC80] mt-5 mb-5 p-4 rounded-md bg-[#340000]"
+                    placeholder="Your example@gmail.com"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
+                      backdropFilter: "blur(50.1px)",
+                      boxShadow: `
+     
+      
+      -6px -3px 6px -4px #F7EBDD inset,
+      8px 3px 6px -5px #F7EBDD inset,
+      7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
+    `,
+                    }}
+                  />
+                  <label>Project Type</label>
+                  <select
+                    name=""
+                    id=""
+                    className="w-auto h-17 border text-[#EEDCBC80] mt-5 mb-5 p-4 rounded-md bg-[#340000]"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
+                      backdropFilter: "blur(50.1px)",
+                      boxShadow: `
+     
+      
+      -6px -3px 6px -4px #F7EBDD inset,
+      8px 3px 6px -5px #F7EBDD inset,
+      7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
+    `,
+                    }}
+                  >
+                    <option value="">Graphic Design</option>
+                  </select>
 
-              <label htmlFor="">Message</label>
-              <input
-                type="text"
-                className="lg:w-120 md:w-120 h-90 border border-transparent text-[#EEDCBC80] mt-5 mb-5 rounded-md bg-[#340000] font p-5 resize-none"
-                placeholder="Tell me about your project"
-                style={{
-                  background:
-                    "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.08), rgba(238,220,188,0.1) 100%)", // subtle glass background
-                  backdropFilter: "blur(50px)",
-                  boxShadow: `
+                  <label htmlFor="">Message</label>
+                  <input
+                    type="text"
+                    className="lg:w-120 md:w-120 h-90 border border-transparent text-[#EEDCBC80] mt-5 mb-5 rounded-md bg-[#340000] font p-5 resize-none"
+                    placeholder="Tell me about your project"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.08), rgba(238,220,188,0.1) 100%)", // subtle glass background
+                      backdropFilter: "blur(50px)",
+                      boxShadow: `
       /* top-left shine */
       -6px -3px 6px -4px #F7EBDD inset,
 
@@ -665,34 +720,33 @@ startBounce(containerRef.current);
       /* thin golden inner border highlight */
        4px  4px 2px -6px #EEDCBC80 inset
     `,
-                }}
-              />
+                    }}
+                  />
 
-              <button
-                className="lg:w-120 md:w-120 h-17 border text-[#EEDCBC80] mt-5 mb-5 rounded-full cursor-pointer flex items-center justify-center gap-2 px-6"
-                style={{
-                  background:
-                    "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
-                  backdropFilter: "blur(50.1px)",
-                  boxShadow: `
+                  <button
+                    className="lg:w-120 md:w-120 h-17 border text-[#EEDCBC80] mt-5 mb-5 rounded-full cursor-pointer flex items-center justify-center gap-2 px-6"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 30% 30%, rgba(238,220,188,0.09), rgba(238,220,188,0.1) 100%)", // shiny inner glow
+                      backdropFilter: "blur(50.1px)",
+                      boxShadow: `
      
       
       -6px -3px 6px -4px #F7EBDD inset,
       8px 3px 6px -5px #F7EBDD inset,
       7.03px 7.03px 1.17px -8.2px #EEDCBC80 inset
     `,
-                }}
-              >
-                <FaArrowRight className="w-5 h-5" />
-                Submit
-              </button>
+                    }}
+                  >
+                    <FaArrowRight className="w-5 h-5" />
+                    Submit
+                  </button>
+                </div>
+              </form>
             </div>
-          </form>
+          </div>
         </div>
       </div>
-      </div>
-      </div>
-
     </>
   );
 }
