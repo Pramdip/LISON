@@ -8,3 +8,17 @@
   --font-comforta:'Comfortaa','sans-serif';
   --font-exo:'Exo', 'sans-serif';
 }
+@keyframes scroll-horizontal {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Apply the animation to your ul */
+.auto-scroll {
+  display: inline-flex;
+  animation: scroll-horizontal 30s linear infinite;
+}
